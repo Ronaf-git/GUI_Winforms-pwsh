@@ -161,6 +161,15 @@ function New-FormObjectGroupBoxLight {
         [int]$LocationY=1,
 
         [Parameter(Mandatory=$false)]
+        [string]$Font = 'Arial',
+
+        [Parameter(Mandatory=$false)]
+        [int]$FontSize = 12,
+
+        [Parameter(Mandatory=$false)]
+        [Drawing.FontStyle]$FontStyle = 'Regular',
+
+        [Parameter(Mandatory=$false)]
         [System.Drawing.Color]$ForeColor = 'black',
 
         [Parameter(Mandatory=$false)]
@@ -168,99 +177,113 @@ function New-FormObjectGroupBoxLight {
 
 
     )
-    Add-Type -AssemblyName System.Windows.Forms
-    Add-Type -AssemblyName System.Drawing
-        
-    $groupBox = New-Object System.Windows.Forms.GroupBox
-    $groupBox.Location = New-Object System.Drawing.Point($LocationX,$LocationY)
-    $groupBox.text = $Text
-    $groupBox.Size = New-Object System.Drawing.Size($Width,$Height)
-    $groupBox.BackColor = $BackColor
-    $groupBox.forecolor = $Forecolor
-        
-        return $groupBox
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+    
+$groupBox = New-Object System.Windows.Forms.GroupBox
+$groupBox.Location = New-Object System.Drawing.Point($LocationX,$LocationY)
+$groupBox.text = $Text
+$groupBox.Size = New-Object System.Drawing.Size($Width,$Height)
+$groupBox.Font = New-Object Drawing.Font($Font, $FontSize, $FontStyle)
+$groupBox.BackColor = $BackColor
+$groupBox.forecolor = $Forecolor
+    
+    return $groupBox
 
 
-    <#
-    .SYNOPSIS
+<#
+.SYNOPSIS
 
-    Create a GroupBox Object used for GUI.
+Create a GroupBox Object used for GUI.
 
-    .DESCRIPTION
+.DESCRIPTION
 
-    Create a GroupBox Object for Windows Display. Light version with basics parameters
-    Must be added to a Form (Windows.Forms.Form)
-    Usefull for
-    - Grouping together radiobuttons
-    - Creating a group of objects and move/duplicate them easily - also see Panel
-    Note that objects added to the GroupBox have a new X/Y Axis, where top left of the groupbox is 0,0
+Create a GroupBox Object for Windows Display. Light version with basics parameters
+Must be added to a Form (Windows.Forms.Form)
+Usefull for
+ - Grouping together radiobuttons
+ - Creating a group of objects and move/duplicate them easily - also see Panel
+Note that object add to the GroupBox have a new X/Y Axis, where top left of the groupbox is 0,0
 
-    .PARAMETER Text
-    GroupBox's Text
+.PARAMETER Text
+GroupBox's Text
 
-    .PARAMETER Height
-    GroupBox's Height
+.PARAMETER Height
+GroupBox's Height
 
-    .PARAMETER Width
-    GroupBox's Width
+.PARAMETER Width
+GroupBox's Width
 
-    .PARAMETER LocationX 
-    Location of the GroupBox in the form, on the X-Axis. Top Left is 0. Positive value expected
+.PARAMETER LocationX 
+Location of the GroupBox in the form, on the X-Axis. Top Left is 0. Positive value expected
 
-    .PARAMETER LocationY 
-    Location of the GroupBox in the form, on the Y-Axis. Top Left is 0. Positive value expected
+.PARAMETER LocationY 
+Location of the GroupBox in the form, on the Y-Axis. Top Left is 0. Positive value expected
 
-    .PARAMETER ForeColor 
-    Color of the GroupBox's title characters. 
-    See https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color
-    $([System.Drawing.Color]::FromArgb(200,200,200,200))
-    'Red'
+.PARAMETER Font 
+GroupBox's Font
 
-    .PARAMETER BackColor 
-    Color of the GroupBox's backgroud. See https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color
-    $([System.Drawing.Color]::FromArgb(200,200,200,200))
-    'Red'
+.PARAMETER FontSize 
+GroupBox's FontSize
 
-    .INPUTS
+.PARAMETER FontStyle 
+GroupBox's FontStyle. 
+See https://learn.microsoft.com/en-us/dotnet/api/system.drawing.fontstyle
 
-    None.
+.PARAMETER ForeColor 
+Color of the GroupBox's title characters. 
+See https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color
+$([System.Drawing.Color]::FromArgb(200,200,200,200))
+'Red'
 
-    .OUTPUTS
+.PARAMETER BackColor 
+Color of the GroupBox's backgroud. See https://learn.microsoft.com/en-us/dotnet/api/system.drawing.color
+$([System.Drawing.Color]::FromArgb(200,200,200,200))
+'Red'
 
-    System.Windows.Forms.groupbox
+.INPUTS
 
-    .EXAMPLE
+None.
 
-    $MyFormObject = New-FormObjectGroupBoxLight -text 'My GroupBox' -LocationX 15 -LocationY 150 
-    to add an object to the groupbox
-        $MyGroupBox.Controls.add($MyFormObject)
-    to add to a form (Windows.Forms.Form) : 
-        $Form.Controls.add($MyGroupBox)
+.OUTPUTS
 
-    .EXAMPLE
+System.Windows.Forms.groupbox
 
-    $MyParam = @{
-        text ='My GroupBox'
-        Height = 150
-        Width = 400
-        LocationX=20
-        LocationY=750
-        BackColor = 'LightBlue'
-        ForeColor = $([System.Drawing.Color]::FromArgb(200,200,200,200))
-    }
-    $MyFormObject = New-FormObjectGroupBoxLight @MyParam
+.EXAMPLE
 
-    to add an object to the groupbox
-        $MyGroupBox.Controls.add($MyFormObject)
-    to add to a form (Windows.Forms.Form) : 
-        $Form.Controls.add($MyGroupBox)
+$MyFormObject = New-FormObjectGroupBoxLight -text 'My GroupBox' -LocationX 15 -LocationY 150 
+to add an object to the groupbox
+    $MyGroupBox.Controls.add($MyFormObject)
+to add to a form (Windows.Forms.Form) : 
+    $Form.Controls.add($MyGroupBox)
 
-    .LINK
+.EXAMPLE
 
-    https://learn.microsoft.com/fr-fr/dotnet/api/system.windows.forms.groupbox
+$MyParam = @{
+    text ='My GroupBox'
+    Height = 150
+    Width = 400
+    LocationX=20
+    LocationY=750
+    BackColor = 'LightBlue'
+	ForeColor = $([System.Drawing.Color]::FromArgb(200,200,200,200))
+    Font = 'Arial'
+	FontSize = 26
+	FontStyle = 'underline'
+}
+$MyFormObject = New-FormObjectGroupBoxLight @MyParam
 
-    #>    
-        
+to add an object to the groupbox
+    $MyGroupBox.Controls.add($MyFormObject)
+to add to a form (Windows.Forms.Form) : 
+    $Form.Controls.add($MyGroupBox)
+
+.LINK
+
+https://learn.microsoft.com/fr-fr/dotnet/api/system.windows.forms.groupbox
+
+#>    
+            
 }
 
 function New-FormObjectPanelLight {
